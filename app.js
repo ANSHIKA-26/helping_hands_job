@@ -15,7 +15,7 @@ dotenv.config({ path: "./config/config.env" });
 
 app.use(
   cors({
-    origin: '*',
+    origin: 'https://helping-hands-deployement2.netlify.app/',
     methods: ["GET", "POST", "PUT", "DELETE","PATCH","OPTIONS"]
   })
 );
