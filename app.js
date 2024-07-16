@@ -8,6 +8,7 @@ import jobRouter from "./routes/jobRouter.js";
 import applicationRouter from "./routes/applicationRouter.js";
 import { dbConnection } from "./database/dbConnection.js";
 import {errorMiddleware} from "./middlewares/error.js"
+import { CronJob } from 'cron';
 
 
 const app = express();
@@ -42,5 +43,21 @@ app.use("/api/v1/job", jobRouter);
 
 app.use(errorMiddleware);
 
+app.get('/healthcheck', (req, res) => {
+  res.json({ message: 'I am healthy' });
+});
+
+
+ CronJob.from({
+	cronTime: '*/5 * * * * *',
+	onTick: function () {
+		fetch('https://helping-hands-job.onrender.com/healthcheck')
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error(error));
+	},
+	start: true,
+	timeZone: 'America/Los_Angeles'
+});
 
 export default app;
