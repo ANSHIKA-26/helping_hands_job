@@ -42,6 +42,7 @@ const userSchema = new mongoose.Schema({
 
 //hashing the password
 userSchema.pre("save", async function (next) {
+  //check krra h hashed h ya ni ,a gr hashed h toh thike next action , ni h toh vhi chiz bcrypt.hash krdo usse
   if (!this.isModified("password")) {
     next();
   }

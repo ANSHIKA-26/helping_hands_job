@@ -75,6 +75,7 @@ export const getMyJobs = catchAsyncError(async (req, res, next) => {
     );
   }
   const myJobs = await Job.find({ postedBy: req.user._id });
+  //mongoose query where postedby filed mateched the user._id
   res.status(200).json({
     success: true,
     myJobs,
@@ -89,6 +90,8 @@ export const updateJob = catchAsyncError(async (req, res, next) => {
     );
   }
   const { id } = req.params;
+  //route parameters of the url 
+  // are part of the URL path and are used to capture values specified at certain positions in the URL.
   let job = await Job.findById(id);
   if (!job) {
     return next(new ErrorHandler("OOPS! Job not found.", 404));
@@ -135,6 +138,6 @@ export const getSingleJob = catchAsyncError(async (req, res, next) => {
       job,
     });
   } catch (error) {
-    return next(new ErrorHandler(`Invalid ID / CastError`, 404));
+    return next(new ErrorHandler(`Invalid ID`, 404));
   }
 });
