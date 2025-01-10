@@ -16,7 +16,7 @@ dotenv.config({ path: "./config/config.env" });
 
 app.use(
   cors({
-    origin: 'https://helping-hands-deployement2.netlify.app',
+    origin: 'https://job-five-kappa.vercel.app',
     methods: ["GET", "POST", "PUT", "DELETE","PATCH","OPTIONS"],
     credentials: true
   })
