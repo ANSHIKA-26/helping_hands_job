@@ -1,6 +1,8 @@
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import ErrorHandler from "../middlewares/error.js"; 
 import { Job } from "../models/jobSchema.js";
+import {sendWhatsApp} from '../utils/sendWhatsApp.js';
+
 
 export const getAllJobs = catchAsyncError(async (req, res, next) => {
   const jobs = await Job.find({ expired: false });
@@ -60,6 +62,24 @@ export const postJob = catchAsyncError(async (req, res, next) => {
     salaryTo,
     postedBy,
   });
+  try {
+
+    const message = `📢 New Job Alert!\n*${title}*\nLocation: ${city}, ${country}\nCheck it out on Helping Hands!`;
+    const jobSeekers = [
+      { phone: "919650790243" },
+      { phone: "919215061500" },
+    ];
+    
+    for (const user of jobSeekers) {
+      if (user.phone) {
+        await sendWhatsApp(user.phone, message);
+        await sendSMS(user.phone, message); 
+      }
+    }
+  } catch (error) {
+    console.error("⚠️ Failed to send WhatsApp alerts:", error);
+  }
+
   res.status(200).json({
     success: true,
     message: "Job Posted Successfully!",
